@@ -37,21 +37,21 @@ class MatchDB implements matching.MatchingDB<SourceId, TargetId, Item, Item> {
     getTargetObj(targetId: TargetId) : Promise<Item> {
         return Promise.resolve<Item>(alasql("SELECT * FROM Targets WHERE Id=?",[targetId])[0]);
     }
-	getUnmatchedSources() : Promise<SourceId[]> {
+    getUnmatchedSources() : Promise<SourceId[]> {
         let ret = alasql("SELECT a.Id FROM Sources a LEFT JOIN Matches b ON a.Id=b.SrcId WHERE b.SrcId IS NULL");
         let Ids: SourceId[] = [];
         for (let i in ret)
             Ids.push(ret[i]["Id"]);
         return Promise.resolve<SourceId[]>(Ids);
     }
-	getUnmatchedTargets() : Promise<TargetId[]> {
+    getUnmatchedTargets() : Promise<TargetId[]> {
         let ret = alasql("SELECT a.Id FROM Targets a LEFT JOIN Matches b ON a.Id=b.TargetId WHERE b.TargetId IS NULL");
         let Ids: TargetId[] = [];
         for (let i in ret)
             Ids.push(ret[i]["Id"]);
         return Promise.resolve<TargetId[]>(Ids);        
     }
-	storeMatchingPair(pair: matching.MatchingPair<SourceId, TargetId>) : Promise<void> {
+    storeMatchingPair(pair: matching.MatchingPair<SourceId, TargetId>) : Promise<void> {
         alasql("INSERT INTO Matches VALUES (?, ?)", [pair.srcId, pair.targetId]);
         return Promise.resolve();
     }
