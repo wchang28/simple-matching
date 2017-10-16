@@ -12,8 +12,8 @@ export interface MatchingPair<SourceId, TargetId> {
 export type MatchingResult<SourceId, TargetId> = MatchingPair<SourceId, TargetId>[];
 
 export interface MatchingDB<SourceId, TargetId, SourceObj, TargetObj> {
-    getSourceObj(srcId: SourceId) : Promise<SourceObj>;
-    getTargetObj(targetId: TargetId) : Promise<TargetObj>;
+	getSourceObj(srcId: SourceId) : Promise<SourceObj>;
+	getTargetObj(targetId: TargetId) : Promise<TargetObj>;
 	getUnmatchedSources() : Promise<SourceId[]>;
 	getUnmatchedTargets() : Promise<TargetId[]>;
 	storeMatchingPair(pair: MatchingPair<SourceId, TargetId>) : Promise<void>;
@@ -29,11 +29,11 @@ class MatcherCls<SourceId, TargetId, SourceObj, TargetObj> extends events.EventE
 	constructor(private matchingDB: MatchingDB<SourceId, TargetId, SourceObj, TargetObj>, private comparator: Comparator<SourceObj, TargetObj>) {
 		super();
 	}
-    private match(srcId: SourceId, targetId: TargetId) : Promise<boolean> {
+	private match(srcId: SourceId, targetId: TargetId) : Promise<boolean> {
 		this.emit("matching", srcId, targetId);
-        return Promise.all([this.matchingDB.getSourceObj(srcId), this.matchingDB.getTargetObj(targetId)])
-        .then((value: [SourceObj, TargetObj]) => this.comparator(value[0], value[1]));
-    }
+		return Promise.all([this.matchingDB.getSourceObj(srcId), this.matchingDB.getTargetObj(targetId)])
+		.then((value: [SourceObj, TargetObj]) => this.comparator(value[0], value[1]));
+	}
 
 	private tryMatchSourceWithTargets(srcId: SourceId, targetIds: TargetId[]) : Promise<TargetId> {
 		let n = targetIds.length;
@@ -49,7 +49,7 @@ class MatcherCls<SourceId, TargetId, SourceObj, TargetObj> extends events.EventE
 			p = p.then(onFulFilledHandlerFactory(i));
 		return p.then(() => matchedTarget);
 	}
-	
+
 	private tryMatchSource(srcId: SourceId) : Promise<TargetId> {
 		return this.matchingDB.getUnmatchedTargets()
 		.then((targetIds: TargetId[]) => {
