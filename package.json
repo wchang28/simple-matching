@@ -1,0 +1,25 @@
+{
+  "name": "simple-matching",
+  "description": "Simple Matching Algorithm with Promise",
+  "version": "0.0.1",
+  "scripts": {
+    "test": "node ./js/test/app.js"
+  },
+  "author": {
+    "name": "Wen Chang",
+    "email": "wchang28@hotmail.com"
+  },
+  "main": "./js/index.js",
+  "typings": "./js/index.d.ts",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wchang28/simple-matching.git"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.70",
+    "@types/node": "^8.0.34",
+    "alasql": "^0.4.3",
+    "lodash": "^4.17.4"
+  }
+}
